@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>NYT Articles</title>
+</head>
+<body>
+    <header>
+        <div class="jumbotron jumbotron-fluid" style="background-color: navy; color: white;">
+            <div class="container">
+              <h1 class="display-4">New York Times Search</h1>
+              <p class="lead">Use the parameters below to search!</p>
+            </div>
+          </div>
+    </header>
+    <div class="container" style="border: solid 2px;">
+        Search Parameters
+        <!--Form-->
+        <form>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Search Term</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Numbers of Records to Retrieve</label>
+                <select class="form-control" id="exampleFormControlSelect1">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Start Year(Optional):</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">End Year(Optional):</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1">
+            </div>
+        </form>
+            <!--buttons-->
+            <input class="btn btn-primary" id="search" type="submit" value="Search">
+            <input class="btn btn-primary" type="reset" value="Clear">
+    </div>
+      <br>
+      <br>
+        <!--Display Articles -->
+        <div class="container  " style="border: solid 2px;">
+            Top Articles
+            <div class="row">
+                <div class="col-lg-12"></div>
+            </div>
+            <!--Should he pre-make all 5 rows? -->
+            <div class="row">
+                <div class="col-lg-12"> </div>
+            </div>
+        </div>
+        <br>
+        <br>
+    <footer>
+        <div class="card-footer text-muted">
+            Made with Love &hearts;
+        </div>
+    </footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+"use strict";
+//API KEY xs8258mjnKxILEnEp1IAXGnMYGxaLTGK
+//https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=yourkey
+var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=election&api-key=xs8258mjnKxILEnEp1IAXGnMYGxaLTGK"
+$("#search").on("click", function() {
+    // build the string
+    var searchTerm = $("#search-term").val();
+    var recordNum = $("#number-records").val();
+    var startYear = $("#start-year").val();
+    var endYear = $("#end-year").val();
+    var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?q=" + searchTerm + "&begin_date=" + startYear + "&end_date=" + endYear + "&api-key=xs8258mjnKxILEnEp1IAXGnMYGxaLTGK";
+    console.log(queryURL);
+    $.ajax({
+        url: queryURL,
+        method: "GET",
+    }).then(function(obj) {
+        for (var i = 0; i < recordNum; i++) {
+            //headline
+            console.log(obj.response.docs[i].headline.main);
+            //title
+            console.log(obj.response.docs[i].headline.name);
+            //author name
+            console.log(obj.response.docs[i].byline.original);
+            //posted date/time
+            console.log(obj.response.docs[i].pub_date);
+            //section
+            console.log(obj.response.docs[i].section_name);
+            //link
+            console.log(obj.response.docs[i].url);
+        }
+    });
+});
+
+</script>
+
+</body>
